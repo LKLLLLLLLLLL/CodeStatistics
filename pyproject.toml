@@ -1,7 +1,7 @@
 [project]
-name = "codecounter"
+name = "code-stat"
 version = "0.1.0"
-description = "Add your description here"
+description = "A full python tool to gather statistics from your codebase."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -9,3 +9,17 @@ dependencies = [
     "pydantic>=2.12.3",
     "pyyaml>=6.0.3",
 ]
+
+[project.scripts]
+code-stat = "code_stat.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["code_stat"]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+code_stat = ["config/*.yml"]

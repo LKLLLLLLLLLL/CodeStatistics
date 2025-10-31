@@ -2,6 +2,9 @@ import yaml
 from pathlib import Path
 from typing import Self
 from pydantic import BaseModel, model_validator, PrivateAttr
+from importlib.resources import files
+
+CONFIG_PATH = str(files("code_stat").joinpath("config/languages.yml"))
 
 class Language(BaseModel):
     name: str
@@ -30,11 +33,11 @@ class LanguageConfig(BaseModel):
         return self
 
     @classmethod
-    def from_yaml(cls, path: Path) -> "LanguageConfig":
+    def from_yaml(cls) -> "LanguageConfig":
         config_dict: dict
-        with open(path, "r") as f:
+        path = Path(CONFIG_PATH)
+        with open(path, "r", encoding="utf-8") as f:
             config_dict = yaml.safe_load(f)
-        print(config_dict)
         languages_list = []
         for key, value in config_dict["languages"].items():
             languages_list.append(

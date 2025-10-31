@@ -1,9 +1,7 @@
 from pathlib import Path
-from src.language_config import LanguageConfig
+from code_stat.language_config import LanguageConfig
 import os
 import chardet
-
-CONFIG_PATH = Path(__file__).parent / "languages.yaml"
 
 def _detect_file_encoding(file_path: Path) -> str | None:
     try:
@@ -39,7 +37,7 @@ def _counter_lines_in_file(file_path: Path, config: LanguageConfig) -> dict[str,
     return {language.name: lines_count}
 
 def counter_lines(path: Path, is_git_repo: bool) -> dict[str, int]:
-    config = LanguageConfig.from_yaml(CONFIG_PATH)
+    config = LanguageConfig.from_yaml()
     total_counts: dict[str, int] = {}
     for root, dirs, files in os.walk(path):
         for file in files:

@@ -8,3 +8,11 @@ wheels/
 
 # Virtual environments
 .venv
+
+# system files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
