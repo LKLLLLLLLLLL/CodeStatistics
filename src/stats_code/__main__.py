@@ -1,6 +1,6 @@
 import argparse
 import os
-from code_stat.counter import counter_lines
+from stats_code.counter import counter_lines
 from pathlib import Path
 
 def main():

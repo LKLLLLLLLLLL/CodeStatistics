@@ -1,5 +1,5 @@
 from pathlib import Path
-from code_stat.language_config import LanguageConfig
+from stats_code.language_config import LanguageConfig
 import os
 import chardet
 

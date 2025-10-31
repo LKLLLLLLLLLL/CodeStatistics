@@ -1,25 +1,42 @@
 [project]
-name = "code-stat"
+name = "stats-code"
 version = "0.1.0"
 description = "A full python tool to gather statistics from your codebase."
-readme = "README.md"
+readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.11"
 dependencies = [
     "chardet>=5.2.0",
     "pydantic>=2.12.3",
     "pyyaml>=6.0.3",
 ]
+authors = [
+    { name = "LKLLL", email = "13263311018@163.com" }
+]
+license = { file = "LICENSE" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+keywords = ["code", "developer", "statistics", "stats-code"]
+urls = { "Home" = "https://github.com/LKLLLLLLLLLL/CodeStatistics"}
 
 [project.scripts]
-code-stat = "code_stat.__main__:main"
+stats-code = "stats_code.__main__:main"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["code_stat"]
+packages = ["stats_code"]
 package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
-code_stat = ["config/*.yml"]
+stats_code = ["config/*.yml"]
+
+[dependency-groups]
+dev = [
+    "twine>=6.2.0",
+]
