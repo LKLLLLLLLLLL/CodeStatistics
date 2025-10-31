@@ -1,13 +1,15 @@
 [project]
 name = "stats-code"
-version = "0.1.0"
+version = "0.1.1"
 description = "A full python tool to gather statistics from your codebase."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.11"
 dependencies = [
     "chardet>=5.2.0",
+    "pathspec>=0.12.1",
     "pydantic>=2.12.3",
     "pyyaml>=6.0.3",
+    "rich>=14.2.0",
 ]
 authors = [
     { name = "LKLLL", email = "13263311018@163.com" }

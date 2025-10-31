@@ -1,124 +1,125 @@
 # A file defines the map program languages to their extend names.
+# The default colors comes from GitHub Linguist colors(https://github.com/github-linguist/linguist/blob/main/lib/linguist/languages.yml)
 
 languages:
   # Python
   "Python":
-    exts: [".py", ".pyd"]
-    color: 
+    exts: [".py", ".pyd", ".pyi"]
+    color: "#3572a5"
 
   # JavaScript / TypeScript
   "JavaScript":
     exts: [".js", ".jsx"]
-    color:
+    color: "#f1e05a"
 
   "TypeScript":
     exts: [".ts", ".tsx"]
-    color:
+    color: "#3178c6"
 
   # Java / Kotlin
   "Java":
     exts: [".java"]
-    color: 
+    color: "#b07219"
 
   "Kotlin":
     exts: [".kt", ".kts"]
-    color:
+    color: "#A97BFF"
 
   # C family
   "C":
     exts: [".c", ".h"]
-    color:
+    color: "#555555"
 
-  "CPP":
+  "C++":
     exts: [".cpp", ".hpp", ".cc", ".cxx"]
-    color:
+    color: "#f34b7d"
 
   "Objective-C":
     exts: [".m", ".mm"]
-    color:
+    color: "#c84e2b"
 
-  "CSharp":
+  "C#":
     exts: [".cs"]
-    color:
+    color: "#178600"
 
   # Rust / Go
   "Rust":
     exts: [".rs"]
-    color:
+    color: "#dea584"
 
   "Go":
     exts: [".go"]
-    color:
+    color: "#00ADD8"
 
   # Ruby / Lua / PHP
   "Ruby":
     exts: [".rb"]
-    color:
+    color: "#701516"
 
   "Lua":
     exts: [".lua"]
-    color:
+    color: "#000080"
 
   "PHP":
     exts: [".php"]
-    color:
+    color: "#4F5D95"
 
   # Web
   "HTML":
     exts: [".html", ".htm"]
-    color:
+    color: "#e34c26"
 
   "CSS":
     exts: [".css"]
-    color:
+    color: "#663399"
 
   "SCSS":
     exts: [".scss"]
-    color:
+    color: "#c6538c"
 
   # Docs
   "Markdown":
     exts: [".md"]
-    color:
+    color: "#083fa1"
 
   # Data Formats
   "JSON":
     exts: [".json"]
-    color:
+    color: "#292929"
 
   "YAML":
     exts: [".yaml", ".yml"]
-    color:
+    color: "#cb171e"
 
   "TOML":
     exts: [".toml"]
-    color:
+    color: "#9c4221"
 
   "XML":
     exts: [".xml"]
-    color:
+    color: "#0060ac"
 
   # scripts
   "Shell":
     exts: [".sh", ".bash", ".zsh"]
-    color:
+    color: "#89e051"
 
   "PowerShell":
     exts: [".ps1"]
-    color:
+    color: "#012456"
 
   # sql
   "SQL":
     exts: [".sql"]
-    color:
+    color: "#e38c00"
   
   # docker
   "Dockerfile":
     exts: [".Dockerfile", ".dockerfile"]
-    color:
+    color: "#384d54"
 
   "Unknown":
     exts: []
-    color:
+    color: "#ededed"
 
-skip: [".exe", ".dll", ".bin", ".jar"]
+skip: [".lock", ".lock.json", "LICENSE", ""]
