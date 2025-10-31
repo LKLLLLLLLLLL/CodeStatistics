@@ -1,0 +1,124 @@
+# A file defines the map program languages to their extend names.
+
+languages:
+  # Python
+  "Python":
+    exts: [".py", ".pyd"]
+    color: 
+
+  # JavaScript / TypeScript
+  "JavaScript":
+    exts: [".js", ".jsx"]
+    color:
+
+  "TypeScript":
+    exts: [".ts", ".tsx"]
+    color:
+
+  # Java / Kotlin
+  "Java":
+    exts: [".java"]
+    color: 
+
+  "Kotlin":
+    exts: [".kt", ".kts"]
+    color:
+
+  # C family
+  "C":
+    exts: [".c", ".h"]
+    color:
+
+  "CPP":
+    exts: [".cpp", ".hpp", ".cc", ".cxx"]
+    color:
+
+  "Objective-C":
+    exts: [".m", ".mm"]
+    color:
+
+  "CSharp":
+    exts: [".cs"]
+    color:
+
+  # Rust / Go
+  "Rust":
+    exts: [".rs"]
+    color:
+
+  "Go":
+    exts: [".go"]
+    color:
+
+  # Ruby / Lua / PHP
+  "Ruby":
+    exts: [".rb"]
+    color:
+
+  "Lua":
+    exts: [".lua"]
+    color:
+
+  "PHP":
+    exts: [".php"]
+    color:
+
+  # Web
+  "HTML":
+    exts: [".html", ".htm"]
+    color:
+
+  "CSS":
+    exts: [".css"]
+    color:
+
+  "SCSS":
+    exts: [".scss"]
+    color:
+
+  # Docs
+  "Markdown":
+    exts: [".md"]
+    color:
+
+  # Data Formats
+  "JSON":
+    exts: [".json"]
+    color:
+
+  "YAML":
+    exts: [".yaml", ".yml"]
+    color:
+
+  "TOML":
+    exts: [".toml"]
+    color:
+
+  "XML":
+    exts: [".xml"]
+    color:
+
+  # scripts
+  "Shell":
+    exts: [".sh", ".bash", ".zsh"]
+    color:
+
+  "PowerShell":
+    exts: [".ps1"]
+    color:
+
+  # sql
+  "SQL":
+    exts: [".sql"]
+    color:
+  
+  # docker
+  "Dockerfile":
+    exts: [".Dockerfile", ".dockerfile"]
+    color:
+
+  "Unknown":
+    exts: []
+    color:
+
+skip: [".exe", ".dll", ".bin", ".jar"]

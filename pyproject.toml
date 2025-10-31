@@ -1,0 +1,11 @@
+[project]
+name = "codecounter"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "chardet>=5.2.0",
+    "pydantic>=2.12.3",
+    "pyyaml>=6.0.3",
+]
