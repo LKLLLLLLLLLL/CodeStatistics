@@ -32,7 +32,6 @@ def _counter_lines_in_file(file_path: Path, config: LanguageConfig) -> dict[str,
             lines = f.readlines()
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
-    lines_count = 0
     lines_count = sum(1 for line in lines if line.strip())
     return {language.name: lines_count}
 

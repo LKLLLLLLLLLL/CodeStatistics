@@ -86,6 +86,10 @@ languages:
     exts: [".scss"]
     color: "#c6538c"
 
+  "VUE":
+    exts: [".vue"]
+    color: "#41b883"
+
   # Docs
   "Markdown":
     exts: [".md"]
