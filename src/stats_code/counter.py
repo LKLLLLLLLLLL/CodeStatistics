@@ -23,7 +23,7 @@ def _counter_lines_in_file(file_path: Path, config: LanguageConfig) -> dict[str,
     if not encoding:
         return {}
     ext = file_path.suffix
-    if config.needs_skip(ext):
+    if config.needs_skip(filename=file_path.name):
         return {}
     language = config.get_language_by_extension(ext)
     lines = []
@@ -33,9 +33,7 @@ def _counter_lines_in_file(file_path: Path, config: LanguageConfig) -> dict[str,
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
     lines_count = 0
-    for line in lines:
-        if not line.strip() == "":
-            lines_count += 1
+    lines_count = sum(1 for line in lines if line.strip())
     return {language.name: lines_count}
 
 

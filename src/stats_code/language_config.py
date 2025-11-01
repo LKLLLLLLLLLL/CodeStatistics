@@ -14,6 +14,7 @@ class Language(BaseModel):
 class LanguageConfig(BaseModel):
     languages: list[Language]
     skip_exts: list[str] = []
+    skip_languages: list[str] = []
     _languages_map: dict[str, Language] = PrivateAttr()
 
     @model_validator(mode="after")
@@ -47,9 +48,17 @@ class LanguageConfig(BaseModel):
                     color=value["color"],
                 )
             )
-        return LanguageConfig(languages=languages_list, skip_exts=config_dict.get("skip", []))
+        return LanguageConfig(
+            languages=languages_list,
+            skip_exts=config_dict.get("skip_exts", []),
+            skip_languages=config_dict.get("skip_languages", []),
+        )
     
-    def needs_skip(self, ext: str) -> bool:
+    def needs_skip(self, filename: str) -> bool:
+        ext = Path(filename).suffix
+        lang = self.get_language_by_extension(ext)
+        if lang.name in self.skip_languages:
+            return True
         return ext in self.skip_exts
 
     def get_language_by_extension(self, ext: str) -> Language:

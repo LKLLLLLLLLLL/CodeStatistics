@@ -41,4 +41,5 @@ stats_code = ["config/*.yml"]
 [dependency-groups]
 dev = [
     "twine>=6.2.0",
+    "viztracer>=1.1.0",
 ]

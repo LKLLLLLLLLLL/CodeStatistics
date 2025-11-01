@@ -1,6 +1,15 @@
 # A file defines the map program languages to their extend names.
 # The default colors comes from GitHub Linguist colors(https://github.com/github-linguist/linguist/blob/main/lib/linguist/languages.yml)
 
+skip_exts: [".lock", ".lock.json", "LICENSE", ""]
+skip_languages: 
+  - "JSON"
+  - "YAML"
+  - "TOML"
+  - "XML"
+  - "Markdown"
+  - "Unknown"
+
 languages:
   # Python
   "Python":
@@ -121,5 +130,3 @@ languages:
   "Unknown":
     exts: []
     color: "#ededed"
-
-skip: [".lock", ".lock.json", "LICENSE", ""]
