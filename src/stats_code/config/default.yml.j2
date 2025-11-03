@@ -1,0 +1,27 @@
+{# This is a Jinja2 template for the default YAML configuration file #}
+# A file defines the rules to classify program languages and if exclude some files/languages.
+# The default colors and rules come from GitHub Linguist repository(https://github.com/github/linguist)
+
+VERSION: 1.0.0
+
+skip:
+    # skip rules in regex
+    - path: 
+        ## files and directories to exclude
+{{ (skip.path if skip.get("path") else []) | to_yaml(8) }}
+        ## documentation to be excluded
+{{ (skip.documentation if skip.get("documentation") else []) | to_yaml(8) }}
+    # skip filenames in glob format
+    - files: 
+        - "*.lock"
+        - "*.lock.json"
+    # the category of languages classified below
+    - category: 
+        - "data"
+    # the languages classified below
+    - languages: 
+
+languages:
+{% for lang, props in languages.items() %}    "{{ lang }}":
+        {{ props | to_yaml | indent(8) }}
+{% endfor %}
