@@ -12,3 +12,35 @@ Run the tool on your codebase:
 ```bash
 stats-code
 ```
+
+Or specify a directory:
+```bash
+stats-code /path/to/your/codebase
+```
+
+In default, the tool will read `.gitignore` file to exclude files and directories. But you can disable this behavior with `--no-gitignore` flag:
+```bash
+stats-code --no-git
+```
+
+## Development
+### Use uv
+If you have `uv` installed, you can begin development with:
+```bash
+uv sync
+```
+Run the tool:
+```bash
+uv run -m src.stats_code
+```
+
+### Use pip
+Install development dependencies:
+```bash
+pip install -e .
+```
+Run the tool:
+```bash
+python -m src.stats_code
+```
+

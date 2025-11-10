@@ -4,7 +4,7 @@ from typing import Self
 from pydantic import BaseModel, model_validator, PrivateAttr
 from importlib.resources import files
 
-CONFIG_PATH = str(files("stats_code").joinpath("config/languages.yml"))
+CONFIG_PATH = str(files("stats_code").joinpath("config/default.yml"))
 
 class Language(BaseModel):
     name: str

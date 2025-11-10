@@ -16,3 +16,6 @@ Thumbs.db
 # IDE files
 .vscode/
 .idea/
+
+# For viztracer output
+result.json
