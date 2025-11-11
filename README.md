@@ -18,7 +18,7 @@ Or specify a directory:
 stats-code /path/to/your/codebase
 ```
 
-In default, the tool will read `.gitignore` file to exclude files and directories. But you can disable this behavior with `--no-gitignore` flag:
+In default, the tool will read `.gitignore` file to exclude files and directories. But you can disable this behavior with `--no-git` flag:
 ```bash
 stats-code --no-git
 ```

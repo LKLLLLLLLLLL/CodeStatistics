@@ -1,10 +1,10 @@
-from pathlib import Path
-from stats_code.language_config import LanguageConfig, Language
-import os
 import chardet
-from typing import Optional
+import re
+from pathlib import Path
 from pathspec import PathSpec
-from stats_code.utils import check_path
+from .utils import check_path
+from .result import RepoStatsNode, Result
+from .language_config import LanguageConfig
 
 
 def _detect_file_encoding(file_path: Path) -> str | None:
@@ -35,43 +35,63 @@ def _counter_lines_in_file(file_path: Path) -> int:
     return lines_count
 
 
-def counter_lines(path: Path, is_git_repo: bool) -> dict[Language, int]:
+def _counter_dir(
+    dir_path: Path,
+    config: LanguageConfig,
+    cur_node: RepoStatsNode,
+    no_git_flag: bool,
+    ignore: list[PathSpec],
+) -> None:
+    """
+    A recursive function to count lines in all files under a directory.
+    """
+    ignore_append_flag: bool = False
+    if not no_git_flag:
+        if (dir_path / ".git").exists():
+            # is a git repo
+            if (dir_path / ".gitignore").exists():
+                try:
+                    with (dir_path / ".gitignore").open(
+                        "r", encoding="utf-8", errors="ignore"
+                    ) as f:
+                        ignore.append(
+                            PathSpec.from_lines("gitwildmatch", f.readlines())
+                        )
+                        ignore_append_flag = True
+                except Exception as e:
+                    print(f"Error loading .gitignore in {dir_path}: {e}")
+            new_repo_node = RepoStatsNode()
+            cur_node.submodules[dir_path.name] = new_repo_node
+            cur_node = new_repo_node
+
+    def check_ignore(path: Path) -> bool:
+        for spec in ignore:
+            if check_path(spec, path):
+                return True
+        return False
+
+    for entry in dir_path.iterdir():
+        git_files = r".*\.git.*?"
+        if re.match(git_files, entry.name):
+            continue
+        if entry.is_dir():
+            _counter_dir(entry, config, cur_node, no_git_flag, ignore)
+        elif entry.is_file():
+            if check_ignore(entry):
+                continue
+            if config.check_skip_by_config(entry):
+                continue
+            language = config.detect_language_by_path(entry)
+            file_counts = _counter_lines_in_file(entry)
+            cur_node.stats[language] = cur_node.stats.get(language, 0) + file_counts
+
+    if ignore_append_flag:
+        ignore.pop()
+    return
+
+
+def counter(path: Path, no_git_flag: bool) -> Result:
     config = LanguageConfig.from_yaml()
-    total_counts: dict[Language, int] = {}
-
-    # Load .gitignore as a PathSpec when requested
-    spec: Optional[PathSpec] = None
-    if is_git_repo:
-        gitignore_path = path / ".gitignore"
-        if gitignore_path.exists():
-            try:
-                with gitignore_path.open("r", encoding="utf-8", errors="ignore") as f:
-                    spec = PathSpec.from_lines("gitwildmatch", f.readlines())
-            except Exception as e:
-                print(f"Error loading .gitignore: {e}")
-                spec = None
-
-    for root, dirs, files in os.walk(path):
-        root_path = Path(root)
-        # avoid recursing into .git directory
-        if is_git_repo and ".git" in dirs:
-            dirs.remove(".git")
-
-        # Remove ignored directories from dirs so os.walk won't descend into them
-        if spec:
-            for d in list(dirs):
-                dir_path = root_path / d
-                if check_path(spec, dir_path):
-                    dirs.remove(d)
-
-        for file in files:
-            file_path = root_path / file
-            # if pathspec loaded, check the relative path against the spec
-            if spec is not None and check_path(spec, file_path):
-                continue
-            if config.check_skip_by_config(file_path):
-                continue
-            language = config.detect_language_by_path(file_path)
-            file_counts = _counter_lines_in_file(file_path)
-            total_counts[language] = total_counts.get(language, 0) + file_counts
-    return total_counts
+    result = Result()
+    _counter_dir(path, config, result.root_repo, no_git_flag, [])
+    return result

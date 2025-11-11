@@ -2,7 +2,7 @@ import yaml
 from pathlib import Path
 from importlib.resources import files
 from pathspec import PathSpec
-from stats_code.utils import check_path
+from .utils import check_path
 
 """
 Utils class for reading, validating the config provided by user.

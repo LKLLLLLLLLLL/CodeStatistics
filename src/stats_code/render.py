@@ -1,12 +1,15 @@
-from stats_code.language_config import LanguageConfig, Language
 from rich.console import Console
 from rich.table import Table
 from rich.progress_bar import ProgressBar
+from .language_config import LanguageConfig
+from .result import Result
 
 
-def render_stats(language_config: LanguageConfig, stats: dict[Language, int]) -> None:
+def render_stats(language_config: LanguageConfig, result: Result) -> None:
     console = Console()
     table = Table(title="Code Statistics")
+
+    stats = result.total
 
     table.add_column("Language", justify="left", style="cyan", no_wrap=True)
     table.add_column("Lines of Code", justify="right", style="magenta")
