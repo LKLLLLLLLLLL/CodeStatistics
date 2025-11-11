@@ -71,7 +71,7 @@ def _counter_dir(
         return False
 
     for entry in dir_path.iterdir():
-        git_files = r".*\.git.*?"
+        git_files = r".*\.git.*?"  # pattern like `.gitignore`, `.gitsubmodule` ...
         if re.match(git_files, entry.name):
             continue
         if entry.is_dir():

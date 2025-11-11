@@ -1,11 +1,10 @@
 from rich.console import Console
 from rich.table import Table
 from rich.progress_bar import ProgressBar
-from .language_config import LanguageConfig
 from .result import Result
 
 
-def render_stats(language_config: LanguageConfig, result: Result) -> None:
+def render_stats(result: Result) -> None:
     console = Console()
     table = Table(title="Code Statistics")
 

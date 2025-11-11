@@ -2,7 +2,6 @@ import argparse
 import os
 from .counter import counter
 from .render import render_stats
-from .language_config import LanguageConfig
 from pathlib import Path
 
 
@@ -25,7 +24,7 @@ def main() -> None:
 
     abs_path = Path(os.path.abspath(path))
     result = counter(abs_path, no_git_flag)
-    render_stats(LanguageConfig.from_yaml(), result)
+    render_stats(result)
 
 
 if __name__ == "__main__":
