@@ -1,10 +1,14 @@
 import chardet
 import re
 from pathlib import Path
+from multiprocessing import Pool, cpu_count
 from pathspec import PathSpec
 from .utils import check_path
 from .result import RepoStatsNode, Result
-from .language_config import LanguageConfig
+from .language_config import LanguageConfig, Language
+
+
+TASK_THREASHOLD = 5000
 
 
 def _detect_file_encoding(file_path: Path) -> str | None:
@@ -35,15 +39,21 @@ def _counter_lines_in_file(file_path: Path) -> int:
     return lines_count
 
 
-def _counter_dir(
+def count_lines_task(file_path: Path) -> tuple[Path, int]:
+    """Task for a worker process to count lines in a single file."""
+    return file_path, _counter_lines_in_file(file_path)
+
+
+def _collect_files(
     dir_path: Path,
     config: LanguageConfig,
     cur_node: RepoStatsNode,
     no_git_flag: bool,
     ignore: list[PathSpec],
-) -> None:
+) -> list[tuple[Path, RepoStatsNode, Language]]:
     """
     A recursive function to count lines in all files under a directory.
+    Returns a list of tuples (file_path, repo_node, language).
     """
     ignore_append_flag: bool = False
     if not no_git_flag:
@@ -70,28 +80,47 @@ def _counter_dir(
                 return True
         return False
 
+    tasks = []
     for entry in dir_path.iterdir():
         git_files = r".*\.git.*?"  # pattern like `.gitignore`, `.gitsubmodule` ...
         if re.match(git_files, entry.name):
             continue
         if entry.is_dir():
-            _counter_dir(entry, config, cur_node, no_git_flag, ignore)
+            tasks.extend(_collect_files(entry, config, cur_node, no_git_flag, ignore))
         elif entry.is_file():
             if check_ignore(entry):
                 continue
             if config.check_skip_by_config(entry):
                 continue
             language = config.detect_language_by_path(entry)
-            file_counts = _counter_lines_in_file(entry)
-            cur_node.stats[language] = cur_node.stats.get(language, 0) + file_counts
+            tasks.append((entry, cur_node, language))
 
     if ignore_append_flag:
         ignore.pop()
-    return
+    return tasks
 
 
 def counter(path: Path, no_git_flag: bool) -> Result:
     config = LanguageConfig.from_yaml()
     result = Result()
-    _counter_dir(path, config, result.root_repo, no_git_flag, [])
+    tasks = _collect_files(path, config, result.root_repo, no_git_flag, [])
+
+    if len(tasks) < TASK_THREASHOLD:
+        # process in single process
+        for file_path, repo_node, language in tasks:
+            line_count = _counter_lines_in_file(file_path)
+            repo_node.stats[language] = repo_node.stats.get(language, 0) + line_count
+        return result
+
+    task_result_map = {task[0]: (task[1], task[2]) for task in tasks}
+
+    with Pool(processes=cpu_count()) as pool:
+        file_paths = [task[0] for task in tasks]
+        line_counts = pool.map(_counter_lines_in_file, file_paths)
+
+    for file_path, line_count in zip(file_paths, line_counts):
+        if file_path in task_result_map:
+            repo_node, language = task_result_map[file_path]
+            repo_node.stats[language] = repo_node.stats.get(language, 0) + line_count
+
     return result

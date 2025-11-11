@@ -41,7 +41,7 @@ languages:
 
   "TypeScript":
     type: "programming"
-    names: [".ts", ".tsx"]
+    names: ["*.ts", "*.tsx"]
     color: "#3178c6"
 
   # Java / Kotlin
@@ -70,6 +70,11 @@ languages:
     type: "programming"
     names: ["*.m", "*.mm"]
     color: "#c84e2b"
+
+  "CMake":
+    type: "programming"
+    names: ["CMakeLists.txt", "*.cmake"]
+    color: "#DA3434"
 
   "C#":
     type: "programming"
@@ -171,7 +176,7 @@ languages:
   # docker
   "Dockerfile":
     type: "programming"
-    names: ["*.Dockerfile", "*.dockerfile"]
+    names: ["Dockerfile", "*.Dockerfile", "*.dockerfile"]
     color: "#384d54"
 
   "Docker-compose":
