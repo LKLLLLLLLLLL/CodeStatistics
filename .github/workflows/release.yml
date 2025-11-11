@@ -12,13 +12,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install dependencies
-        run: pip install .[dev]
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Add uv to PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      - name: Install dependencies with uv
+        run: uv sync
       - name: Run Mypy linter
-        run: mypy -p stats_code
+        run: uv run mypy -p stats_code
 
   build:
     runs-on: ubuntu-latest
