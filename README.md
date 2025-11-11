@@ -24,7 +24,7 @@ stats-code --no-git
 ```
 
 ## Development
-### Use uv
+### Use uv (Recommand)
 If you have `uv` installed, you can begin development with:
 ```bash
 uv sync
