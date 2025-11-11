@@ -19,3 +19,6 @@ Thumbs.db
 
 # For viztracer output
 result.json
+
+# mypy cache
+.mypy_cache/

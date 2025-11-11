@@ -11,7 +11,8 @@ It will provide detailed error message when encountering invalid config.s
 
 DEFAULT_CONFIG_PATH = Path(str(files("stats_code").joinpath("config/default.yml")))
 
-class Language():
+
+class Language:
     def __init__(
         self,
         language_name: str,
@@ -34,11 +35,9 @@ class Language():
         self.color: str = color
         self.type: str = type
         self._spec: PathSpec = PathSpec.from_lines("gitwildmatch", self.names)
-    
+
     @staticmethod
     def _validate_color_code(color: str) -> bool:
-        if not isinstance(color, str):
-            return False
         if len(color) != 7 or not color.startswith("#"):
             return False
         hex_digits = "0123456789abcdefABCDEF"
@@ -50,7 +49,8 @@ class Language():
     def __hash__(self) -> int:
         return hash(self.language_name)
 
-class SkipConfig():
+
+class SkipConfig:
     def __init__(
         self,
         paths: list[str],
@@ -60,9 +60,13 @@ class SkipConfig():
         # validate inputs
         if not isinstance(paths, list) or not all(isinstance(p, str) for p in paths):
             raise TypeError("paths must be a list of strings.")
-        if not isinstance(language_types, list) or not all(isinstance(lt, str) for lt in language_types):
+        if not isinstance(language_types, list) or not all(
+            isinstance(lt, str) for lt in language_types
+        ):
             raise TypeError("language_types must be a list of strings.")
-        if not isinstance(languages, list) or not all(isinstance(lang, str) for lang in languages):
+        if not isinstance(languages, list) or not all(
+            isinstance(lang, str) for lang in languages
+        ):
             raise TypeError("languages must be a list of strings.")
         # construct attributes
         self.paths: list[str] = paths
@@ -70,7 +74,8 @@ class SkipConfig():
         self.languages: list[str] = languages
         self._spec: PathSpec = PathSpec.from_lines("gitwildmatch", self.paths)
 
-class LanguageConfig():
+
+class LanguageConfig:
     def __init__(
         self,
         skip: SkipConfig,
@@ -89,11 +94,15 @@ class LanguageConfig():
         # validate skip.language_types match languages
         for skip_lt in self.skip.language_types:
             if not any(lang.type == skip_lt for lang in self.languages):
-                raise ValueError(f"skip.language_types contains invalid type: {skip_lt}")
+                raise ValueError(
+                    f"skip.language_types contains invalid type: {skip_lt}"
+                )
         # validate skip.languages match languages
         for skip_lang in self.skip.languages:
             if not any(lang.language_name == skip_lang for lang in self.languages):
-                raise ValueError(f"skip.languages contains invalid language: {skip_lang}")
+                raise ValueError(
+                    f"skip.languages contains invalid language: {skip_lang}"
+                )
         # validate if "Unknown" language exists
         if not any(lang.language_name == "Unknown" for lang in self.languages):
             raise ValueError('Language "Unknown" is not defined.')
@@ -132,7 +141,7 @@ class LanguageConfig():
             skip=skip_config,
             languages=languages_list,
         )
-    
+
     def check_skip_by_config(self, filepath: Path) -> bool:
         """
         Check if the given filepath should be skipped based on the skip config.

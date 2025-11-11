@@ -3,6 +3,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.progress_bar import ProgressBar
 
+
 def render_stats(language_config: LanguageConfig, stats: dict[Language, int]) -> None:
     console = Console()
     table = Table(title="Code Statistics")
@@ -14,17 +15,32 @@ def render_stats(language_config: LanguageConfig, stats: dict[Language, int]) ->
     sorted_stats = dict(sorted(stats.items(), key=lambda item: item[1], reverse=True))
 
     total_lines = sum(sorted_stats.values())
-    total_bar = ProgressBar(total=100.0, completed=100.0, width=30, complete_style="white", finished_style="white")
+    total_bar = ProgressBar(
+        total=100.0,
+        completed=100.0,
+        width=30,
+        complete_style="white",
+        finished_style="white",
+    )
     table.add_row("Total", str(total_lines), total_bar, None, style="bold white")
     for language, line_count in sorted_stats.items():
         color = (
-            language.color
-            if language and getattr(language, "color", None)
-            else "white"
+            language.color if language and getattr(language, "color", None) else "white"
         )
         assert color is not None
         percentage = (line_count / total_lines * 100) if total_lines > 0 else 0
-        bar = ProgressBar(total=100.0, completed=percentage, width=30, complete_style=color, finished_style=color)
-        table.add_row(f"[{color}]{language.language_name}[/{color}]", str(line_count), bar, f"{percentage:.2f}%")
+        bar = ProgressBar(
+            total=100.0,
+            completed=percentage,
+            width=30,
+            complete_style=color,
+            finished_style=color,
+        )
+        table.add_row(
+            f"[{color}]{language.language_name}[/{color}]",
+            str(line_count),
+            bar,
+            f"{percentage:.2f}%",
+        )
 
     console.print(table)

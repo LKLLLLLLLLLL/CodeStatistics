@@ -5,9 +5,14 @@ from stats_code.render import render_stats
 from stats_code.language_config import LanguageConfig
 from pathlib import Path
 
-def main():
-    parser = argparse.ArgumentParser(description="Counter code lines in a github style.")
-    parser.add_argument("path", nargs="?", type=str, help="Path to the begin directory.")
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Counter code lines in a github style."
+    )
+    parser.add_argument(
+        "path", nargs="?", type=str, help="Path to the begin directory."
+    )
     parser.add_argument(
         "--no-git",
         action="store_true",
@@ -21,6 +26,7 @@ def main():
     abs_path = Path(os.path.abspath(path))
     result = counter_lines(abs_path, is_git_repo)
     render_stats(LanguageConfig.from_yaml(), result)
+
 
 if __name__ == "__main__":
     main()

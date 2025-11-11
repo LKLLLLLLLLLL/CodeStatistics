@@ -6,6 +6,7 @@ from typing import Optional
 from pathspec import PathSpec
 from stats_code.utils import check_path
 
+
 def _detect_file_encoding(file_path: Path) -> str | None:
     try:
         with open(file_path, "rb") as f:
@@ -19,6 +20,7 @@ def _detect_file_encoding(file_path: Path) -> str | None:
         print(f"Error detecting encoding for {file_path}: {e}")
         return None
 
+
 def _counter_lines_in_file(file_path: Path) -> int:
     encoding = _detect_file_encoding(file_path)
     if not encoding:
@@ -31,6 +33,7 @@ def _counter_lines_in_file(file_path: Path) -> int:
         print(f"Error reading {file_path}: {e}")
     lines_count = sum(1 for line in lines if line.strip())
     return lines_count
+
 
 def counter_lines(path: Path, is_git_repo: bool) -> dict[Language, int]:
     config = LanguageConfig.from_yaml()
