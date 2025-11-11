@@ -1,9 +1,10 @@
 from pathlib import Path
-from stats_code.language_config import LanguageConfig
+from stats_code.language_config import LanguageConfig, Language
 import os
 import chardet
 from typing import Optional
 from pathspec import PathSpec
+from stats_code.utils import check_path
 
 def _detect_file_encoding(file_path: Path) -> str | None:
     try:
@@ -18,14 +19,10 @@ def _detect_file_encoding(file_path: Path) -> str | None:
         print(f"Error detecting encoding for {file_path}: {e}")
         return None
 
-def _counter_lines_in_file(file_path: Path, config: LanguageConfig) -> dict[str, int]:
+def _counter_lines_in_file(file_path: Path) -> int:
     encoding = _detect_file_encoding(file_path)
     if not encoding:
-        return {}
-    ext = file_path.suffix
-    if config.needs_skip(filename=file_path.name):
-        return {}
-    language = config.get_language_by_extension(ext)
+        return 0
     lines = []
     try:
         with open(file_path, "r", encoding=encoding, errors="ignore") as f:
@@ -33,27 +30,11 @@ def _counter_lines_in_file(file_path: Path, config: LanguageConfig) -> dict[str,
     except Exception as e:
         print(f"Error reading {file_path}: {e}")
     lines_count = sum(1 for line in lines if line.strip())
-    return {language.name: lines_count}
+    return lines_count
 
-
-def _is_ignored(path_obj: Path, base: Path, spec: Optional[PathSpec]) -> bool:
-    """Return True if path_obj (file or dir) is matched by spec.
-    Use POSIX-style relative path for matching.
-    """
-    if not spec:
-        return False
-    try:
-        rel = path_obj.relative_to(base)
-    except Exception:
-        # If cannot be made relative, use absolute but as posix
-        rel = path_obj
-    rel_posix = rel.as_posix()
-    return spec.match_file(rel_posix)
-
-
-def counter_lines(path: Path, is_git_repo: bool) -> dict[str, int]:
+def counter_lines(path: Path, is_git_repo: bool) -> dict[Language, int]:
     config = LanguageConfig.from_yaml()
-    total_counts: dict[str, int] = {}
+    total_counts: dict[Language, int] = {}
 
     # Load .gitignore as a PathSpec when requested
     spec: Optional[PathSpec] = None
@@ -77,22 +58,17 @@ def counter_lines(path: Path, is_git_repo: bool) -> dict[str, int]:
         if spec:
             for d in list(dirs):
                 dir_path = root_path / d
-                if _is_ignored(dir_path, path, spec):
+                if check_path(spec, dir_path):
                     dirs.remove(d)
-                    # optional debug:
-                    # print(f"Skipping ignored directory: {dir_path}")
 
         for file in files:
             file_path = root_path / file
             # if pathspec loaded, check the relative path against the spec
-            if _is_ignored(file_path, path, spec):
-                # optional debug:
-                # print(f"Skipping ignored file: {file_path}")
+            if spec is not None and check_path(spec, file_path):
                 continue
-            file_counts = _counter_lines_in_file(file_path, config)
-            for lang, count in file_counts.items():
-                if lang in total_counts:
-                    total_counts[lang] += count
-                else:
-                    total_counts[lang] = count
+            if config.check_skip_by_config(file_path):
+                continue
+            language = config.detect_language_by_path(file_path)
+            file_counts = _counter_lines_in_file(file_path)
+            total_counts[language] = total_counts.get(language, 0) + file_counts
     return total_counts

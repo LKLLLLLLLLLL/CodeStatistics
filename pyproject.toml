@@ -7,7 +7,6 @@ requires-python = ">=3.11"
 dependencies = [
     "chardet>=5.2.0",
     "pathspec>=0.12.1",
-    "pydantic>=2.12.3",
     "pyyaml>=6.0.3",
     "rich>=14.2.0",
 ]
@@ -41,5 +40,5 @@ stats_code = ["config/*.yml"]
 [dependency-groups]
 dev = [
     "twine>=6.2.0",
-    "viztracer>=1.1.0",
+    "viztracer>=1.1.1",
 ]

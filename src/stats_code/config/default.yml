@@ -1,136 +1,195 @@
 # A file defines the map program languages to their extend names.
 # The default colors comes from GitHub Linguist colors(https://github.com/github-linguist/linguist/blob/main/lib/linguist/languages.yml)
 
-skip_exts: [".lock", ".lock.json", "LICENSE", ""]
-skip_languages: 
-  - "JSON"
-  - "YAML"
-  - "TOML"
-  - "XML"
-  - "Markdown"
-  - "Unknown"
+version: 1.0.0
+
+skip:
+  paths:
+    # skip path in glob patterns
+    - "node_modules/**"
+    - "vendor/**"
+    - "**/dist/**"
+    - "**/build/**"
+    - "**/.git/**"
+    - "**/__pycache__/**"
+  language_types:
+    - "data"
+    - "unknown"
+  languages:
+    - "Markdown"
+    - "lockfile"
+    - "plain text"
 
 languages:
+  # language can be defined in 
+  # "language name"
+  #  type: "type of language"             # in "programing", "data", "markup", "script", "unknown", etc
+  #  name: ["list of file name patterns"] # in glob patterns
+  #  color: "#hexcolor"                   # color code
+
   # Python
   "Python":
-    exts: [".py", ".pyd", ".pyi"]
+    type: "programming"
+    names: ["*.py", "*.pyd", "*.pyi"]
     color: "#3572a5"
 
   # JavaScript / TypeScript
   "JavaScript":
-    exts: [".js", ".jsx"]
+    type: "programming"
+    names: ["*.js", "*.jsx"]
     color: "#f1e05a"
 
   "TypeScript":
-    exts: [".ts", ".tsx"]
+    type: "programming"
+    names: [".ts", ".tsx"]
     color: "#3178c6"
 
   # Java / Kotlin
   "Java":
-    exts: [".java"]
+    type: "programming"
+    names: ["*.java"]
     color: "#b07219"
 
   "Kotlin":
-    exts: [".kt", ".kts"]
+    type: "programming"
+    names: ["*.kt", "*.kts"]
     color: "#A97BFF"
 
   # C family
   "C":
-    exts: [".c", ".h"]
+    type: "programming"
+    names: ["*.c", "*.h"]
     color: "#555555"
 
   "C++":
-    exts: [".cpp", ".hpp", ".cc", ".cxx"]
+    type: "programming"
+    names: ["*.cpp", "*.hpp", "*.cc", "*.cxx"]
     color: "#f34b7d"
 
   "Objective-C":
-    exts: [".m", ".mm"]
+    type: "programming"
+    names: ["*.m", "*.mm"]
     color: "#c84e2b"
 
   "C#":
-    exts: [".cs"]
+    type: "programming"
+    names: ["*.cs"]
     color: "#178600"
 
   # Rust / Go
   "Rust":
-    exts: [".rs"]
+    type: "programming"
+    names: ["*.rs"]
     color: "#dea584"
 
   "Go":
-    exts: [".go"]
+    type: "programming"
+    names: ["*.go"]
     color: "#00ADD8"
 
   # Ruby / Lua / PHP
   "Ruby":
-    exts: [".rb"]
+    type: "programming"
+    names: ["*.rb"]
     color: "#701516"
 
   "Lua":
-    exts: [".lua"]
+    type: "programming"
+    names: ["*.lua"]
     color: "#000080"
 
   "PHP":
-    exts: [".php"]
+    type: "programming"
+    names: ["*.php"]
     color: "#4F5D95"
 
   # Web
   "HTML":
-    exts: [".html", ".htm"]
+    type: "markup"
+    names: ["*.html", "*.htm"]
     color: "#e34c26"
 
   "CSS":
-    exts: [".css"]
-    color: "#663399"
+    type: "markup"
+    names: ["*.css"]
+    color: "#563d7c"
 
   "SCSS":
-    exts: [".scss"]
+    type: "markup"
+    names: ["*.scss"]
     color: "#c6538c"
 
   "VUE":
-    exts: [".vue"]
+    type: "programming"
+    names: ["*.vue"]
     color: "#41b883"
 
   # Docs
   "Markdown":
-    exts: [".md"]
+    type: "markup"
+    names: ["*.md"]
     color: "#083fa1"
 
   # Data Formats
   "JSON":
-    exts: [".json"]
+    type: "data"
+    names: ["*.json"]
     color: "#292929"
 
   "YAML":
-    exts: [".yaml", ".yml"]
+    type: "data"
+    names: ["*.yaml", "*.yml"]
     color: "#cb171e"
 
   "TOML":
-    exts: [".toml"]
+    type: "data"
+    names: ["*.toml"]
     color: "#9c4221"
 
   "XML":
-    exts: [".xml"]
+    type: "data"
+    names: ["*.xml"]
     color: "#0060ac"
 
   # scripts
   "Shell":
-    exts: [".sh", ".bash", ".zsh"]
+    type: "script"
+    names: ["*.sh", "*.bash", "*.zsh"]
     color: "#89e051"
 
   "PowerShell":
-    exts: [".ps1"]
+    type: "script"
+    names: ["*.ps1"]
     color: "#012456"
 
   # sql
   "SQL":
-    exts: [".sql"]
+    type: "programming"
+    names: ["*.sql"]
     color: "#e38c00"
   
   # docker
   "Dockerfile":
-    exts: [".Dockerfile", ".dockerfile"]
+    type: "programming"
+    names: ["*.Dockerfile", "*.dockerfile"]
     color: "#384d54"
 
+  "Docker-compose":
+    type: "programming"
+    names: ["docker-compose.yml", "docker-compose.yaml"]
+    color: "#384d54"
+
+  "lockfile":
+    type: "data"
+    names: ["*.lock", "*.lock.json", "*-lock.json"]
+    color: "#ededed"
+
+  "plain text":
+    type: "data"
+    names: ["*.txt", "LICENSE", "LICENSE.txt"]
+    color: "#ededed"
+
   "Unknown":
-    exts: []
+    type: "unknown"
+    names: ["*"]
     color: "#ededed"
