@@ -229,24 +229,24 @@ class LanguageConfig:
         if check_path(self.skip._spec, filepath):
             return True
         language = self.detect_language_by_path(filepath)
-        if language.language_name in self.skip.languages:
+        if self.languages[language].language_name in self.skip.languages:
             return True
-        if language.type in self.skip.language_types:
+        if self.languages[language].type in self.skip.language_types:
             return True
         return False
 
-    def detect_language_by_path(self, filepath: Path) -> Language:
+    def detect_language_by_path(self, filepath: Path) -> int:
         """
         Detect the language of the given filepath based on the language config.
         If no match found, throw assert error.
         """
         index = self._lut.lookup(filepath)
         if index is not None:
-            return self.languages[index]
+            return index
         raise AssertionError(f"No matching language found for file: {filepath}")
 
-        # old, slow implementation
-        # for language in self.languages:
+        # # old, slow implementation
+        # for index, language in enumerate(self.languages):
         #     if check_path(language._spec, filepath):
-        #         return language
+        #         return index
         # raise AssertionError(f"No matching language found for file: {filepath}")

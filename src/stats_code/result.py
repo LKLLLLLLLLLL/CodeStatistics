@@ -8,9 +8,19 @@ class RepoStatsNode:
     A repo node in the stats-code result tree.
     """
 
+    _nodes_map: dict[int, "RepoStatsNode"] = {}
+    _nodes_count: int = 0  # for generating unique IDs
+
     def __init__(self) -> None:
         self.submodules: dict[str, RepoStatsNode] = {}
         self.stats: Stats = {}
+        self.id: int = RepoStatsNode._nodes_count
+        RepoStatsNode._nodes_map[self.id] = self
+        RepoStatsNode._nodes_count += 1
+
+    @classmethod
+    def get_node_by_id(cls, node_id: int) -> "RepoStatsNode":
+        return cls._nodes_map[node_id]
 
 
 class Result:

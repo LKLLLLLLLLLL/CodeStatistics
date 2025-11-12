@@ -2,10 +2,14 @@ import subprocess
 import time
 
 command = ["uv", "run", "stats-code", "../cpython"]
+# command = ["uv", "run", "stats-code", "./"]
+# command = ["uv", "run", "stats-code", "../cpython"]
+# command = ["stats-code", "../cpython"]
+
 
 times = []
 
-for i in range(3):
+for i in range(30):
     start_time = time.time()
     result = subprocess.run(command, capture_output=True, text=True)
     end_time = time.time()
